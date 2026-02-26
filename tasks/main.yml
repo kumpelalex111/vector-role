@@ -1,0 +1,35 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks for install vector
+- name: Copy distrib  vector
+  ansible.builtin.copy:
+    src: ./files/vector_0.53.0-1_amd64.deb
+    dest: /tmp/vector_0.53.0-1_amd64.deb
+    owner: root
+    group: root
+    mode: "0644"
+- name: Install Vector
+  ansible.builtin.apt:
+    deb: /tmp/vector_0.53.0-1_amd64.deb
+    state: present
+    auto_install_module_deps: true
+    update_cache: false
+- name: Configure Vector | ensure what directory exists
+  ansible.builtin.file:
+    path: "{{ vector_config_dir }}"
+    state: directory
+    mode: "0644"
+- name: Configure Vector | Template config
+  ansible.builtin.template:
+    src: ./templates/vector.yml.j2
+    mode: "0644"
+    dest: "{{ vector_config_dir }}/vector.yml"
+   notify: Restart vector service
+- name: Configure Service | Template systemd unit
+  become: true
+  ansible.builtin.template:
+    src: ./templates/vector.service.j2
+    dest: /etc/systemd/system/vector.service
+    mode: "0644"
+  notify: restart vector service
+
