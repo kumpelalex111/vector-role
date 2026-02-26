@@ -1,8 +1,8 @@
 #SPDX-License-Identifier: MIT-0
 ---
 - name: Restart vector service
-    become: true
-    ansible.builtin.systemd:
-      name: vector
-      state: restarted
-      daemon_reload: true
+  become: true
+  ansible.builtin.systemd:
+    name: vector
+    state: restarted
+    daemon_reload: true

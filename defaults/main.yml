@@ -1,6 +1,5 @@
 #SPDX-License-Identifier: MIT-0
 ---
----
 # Desired version of vector
 vector_version: 0.53.0
 # Path to vector configs
